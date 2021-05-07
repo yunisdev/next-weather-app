@@ -30,9 +30,7 @@ export default (req, res) => {
     .then(response => {
       response.json().then(data => {
         console.log(data)
-        console.log("AA")
         if (data.cod == 200) {
-          console.log("BB")
           let ow_obj = new OpenWeatherResponse(data)
           console.log(ow_obj)
           res.status(200).json(ow_obj)

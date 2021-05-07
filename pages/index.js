@@ -3,7 +3,7 @@ import Image from 'next/image'
 import styles from '../styles/Home.module.scss'
 import WeatherInfo from '../components/WeatherInfo'
 import React from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import SubmitButton from '../components/SubmitButton'
 
 class Home extends React.Component {
   constructor(props) {
@@ -11,7 +11,8 @@ class Home extends React.Component {
     this.state = {
       weatherData: null,
       search: '',
-      title: null
+      title: null,
+      loading: false
     }
   }
 
@@ -19,14 +20,14 @@ class Home extends React.Component {
     this.setState({ search: event.target.value })
   }
 
-  async handleSearchSubmit(e) {
+  handleSearchSubmit(e) {
     e.preventDefault()
-    this.setState({ title: this.state.search })
+    this.setState({ title: this.state.search, loading: true })
     fetch('/api/weather?name=' + this.state.search)
       .then(res => {
         res.json()
           .then(data => {
-            this.setState({ weatherData: data })
+            this.setState({ weatherData: data, loading: false })
           })
           .catch(e => alert(e))
       })
@@ -42,8 +43,10 @@ class Home extends React.Component {
         <div className={styles.container}>
           <div className={styles.search_box}>
             <div>
-              <input placeholder="Search..." type="text" value={this.state.search} onChange={(e) => { this.handleSearchChange(e) }} />
-              <button onClick={(e) => { this.handleSearchSubmit(e) }}><i className="fas fa-search"></i></button>
+              <form onSubmit={(e) => { this.handleSearchSubmit(e) }}>
+                <input placeholder="Search..." type="text" value={this.state.search} onChange={(e) => { this.handleSearchChange(e) }} />
+                <SubmitButton loading={this.state.loading}/>
+              </form>
             </div>
           </div>
           <WeatherInfo data={this.state.weatherData} />

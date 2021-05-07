@@ -23,7 +23,7 @@ $shadow: rgba(0, 0, 0, 0.2);
     padding: 10px 15px;
     border-radius: 1rem;
     box-shadow: 0px 0px 20px $shadow;
-    > div {
+    > div, form {
         border-radius: 10px;
         display: flex;
         input {
@@ -51,4 +51,8 @@ $shadow: rgba(0, 0, 0, 0.2);
             color: white;
         }
     }
+}
+.loading_button{
+    background: $color!important;
+    color: white!important;
 }
