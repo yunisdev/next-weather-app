@@ -4,29 +4,41 @@ import styles from '../styles/Home.module.scss'
 import WeatherInfo from '../components/WeatherInfo'
 import React from 'react'
 import SubmitButton from '../components/SubmitButton'
+import WeatherData from '../types/WeatherData'
 
-class Home extends React.Component {
-  constructor(props) {
+type HomeProps = {
+
+}
+
+type HomeState = {
+  weatherData: WeatherData,
+  search: string,
+  loading: boolean,
+  title: string
+}
+
+class Home extends React.Component<HomeProps, HomeState> {
+  state: HomeState = {
+    weatherData: null,
+    search: '',
+    title: null,
+    loading: false
+  }
+  constructor(props: HomeProps) {
     super(props)
-    this.state = {
-      weatherData: null,
-      search: '',
-      title: null,
-      loading: false
-    }
   }
 
-  handleSearchChange(event) {
+  handleSearchChange(event: any): void {
     this.setState({ search: event.target.value })
   }
 
-  handleSearchSubmit(e) {
+  handleSearchSubmit(e): void {
     e.preventDefault()
     this.setState({ title: this.state.search, loading: true })
     fetch('/api/weather?name=' + this.state.search)
       .then(res => {
         res.json()
-          .then(data => {
+          .then((data: WeatherData) => {
             this.setState({ weatherData: data, loading: false })
           })
           .catch(e => alert(e))
@@ -45,7 +57,7 @@ class Home extends React.Component {
             <div>
               <form onSubmit={(e) => { this.handleSearchSubmit(e) }}>
                 <input placeholder="Search..." type="text" value={this.state.search} onChange={(e) => { this.handleSearchChange(e) }} />
-                <SubmitButton loading={this.state.loading}/>
+                <SubmitButton loading={this.state.loading} />
               </form>
             </div>
           </div>
